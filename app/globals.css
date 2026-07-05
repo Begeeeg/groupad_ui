@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+    --color-canvas: #0a0a0a; /* page background - black */
+    --color-surface: #161616; /* board / panel background */
+    --color-surface-soft: #1f1f1f; /* lighter panel tint */
+    --color-line: #2e2e2e; /* borders */
+
+    --color-ink: #f2f2f2; /* primary text */
+    --color-ink-dim: #9ca3af; /* secondary text (gray-400) */
+
+    --color-emerald: #10b981; /* primary accent - buttons, links, pins */
+    --color-emerald-dark: #059669; /* hover / active */
+    --color-emerald-soft: #064e3b; /* deep emerald note background */
+
+    --color-note-graphite: #262626; /* gray-800 note */
+    --color-note-slate: #374151; /* gray-700 note */
+
+    --font-display: var(--font-space-grotesk), sans-serif;
+    --font-body: var(--font-inter), sans-serif;
+    --font-hand: var(--font-caveat), cursive;
+    --font-mono: var(--font-plex-mono), monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background-color: #0a0a0a;
+    color: #f2f2f2;
+}
+
+/* keyboard focus visible everywhere, corkboard style */
+:focus-visible {
+    outline: 3px solid #10b981;
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
 }
