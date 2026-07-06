@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AuthInput from "./AuthInput";
 import { toast } from "sonner";
@@ -18,6 +19,8 @@ export default function LoginForm() {
             [e.target.name]: e.target.value,
         }));
     };
+
+    const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -46,6 +49,8 @@ export default function LoginForm() {
             }
 
             toast.success(data.message || "Log in successfully!");
+
+            router.push("/home");
         } catch (error) {
             console.error(error);
             toast.error(
