@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AuthInput from "@/components/auth/AuthInput";
+import AuthInput from "./AuthInput";
 import { toast } from "sonner";
 
 export default function SignupForm() {
