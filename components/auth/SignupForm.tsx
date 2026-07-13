@@ -3,6 +3,7 @@
 import { useState } from "react";
 import AuthInput from "./AuthInput";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function SignupForm() {
     });
 
     const [submitting, setSubmitting] = useState(false);
+    const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -36,6 +38,7 @@ export default function SignupForm() {
                 `${process.env.NEXT_PUBLIC_API_URL}/identity/auth/signup`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -55,6 +58,7 @@ export default function SignupForm() {
             }
 
             toast.success(data.message || "Account created successfully!");
+            router.push("/home");
         } catch (error) {
             console.error(error);
             toast.error(

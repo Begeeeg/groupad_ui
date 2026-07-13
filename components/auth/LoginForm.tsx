@@ -32,6 +32,7 @@ export default function LoginForm() {
                 `${process.env.NEXT_PUBLIC_API_URL}/identity/auth/login`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
