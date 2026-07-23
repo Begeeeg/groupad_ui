@@ -2,11 +2,15 @@
 
 import { GetListsResponse, List } from "@/types/list/list.types";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import ListsPanel from "./ListsPanel";
+import DashboardSidebar from "./DashboardSidebar";
 
 export default function View() {
     const [lists, setLists] = useState<List[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const router = useRouter();
 
     useEffect(() => {
         const fetchLists = async () => {
@@ -40,46 +44,44 @@ export default function View() {
         fetchLists();
     }, []);
 
+    const handleDelete = async (listId: string) => {
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/pad/list/delete/${listId}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to delete list.");
+            }
+
+            setLists((prev) => prev.filter((list) => list._id !== listId));
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            }
+        }
+    };
+
+    const handleUpdate = (listId: string) => {
+        router.push(`/list/${listId}`);
+    };
+
     return (
-        <div className="flex h-full w-full gap-10">
-            <div className="w-4/5 border border-gray-400 p-5">
-                <h2 className="mb-4 text-xl font-bold">My Lists</h2>
-
-                {loading && <p>Loading...</p>}
-
-                {error && <p className="text-red-500">{error}</p>}
-
-                {!loading && !error && lists.length === 0 && (
-                    <p>No lists found.</p>
-                )}
-
-                {!loading &&
-                    !error &&
-                    lists.map((list) => (
-                        <div key={list._id} className="mb-4 rounded border p-4">
-                            <h3 className="text-lg font-semibold">
-                                {list.title}
-                            </h3>
-
-                            <p>Type: {list.type}</p>
-
-                            <p>Members: {list.members?.length ?? 0}</p>
-
-                            <p>
-                                Due Date:{" "}
-                                {list.dueDate
-                                    ? new Date(
-                                          list.dueDate
-                                      ).toLocaleDateString()
-                                    : "No due date"}
-                            </p>
-                        </div>
-                    ))}
-            </div>
-
-            <div className="w-1/5 border border-gray-400 p-5">
-                <h2 className="font-bold">Sidebar</h2>
-            </div>
+        <div className="flex h-full w-full gap-6 p-6">
+            <ListsPanel
+                lists={lists}
+                loading={loading}
+                error={error}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
+            />
+            <DashboardSidebar />
         </div>
     );
 }

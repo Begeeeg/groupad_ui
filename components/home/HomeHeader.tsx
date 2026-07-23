@@ -18,10 +18,14 @@ export default function HomeHeader() {
         } catch (error) {
             console.error("Logout failed:", error);
         } finally {
-            router.push("/login");
+            router.push("/home");
             router.refresh();
         }
     }
+
+    const handleCreate = () => {
+        router.push("/list");
+    };
 
     return (
         <header className="sticky top-0 z-20 border-b border-line bg-canvas/90 backdrop-blur">
@@ -34,12 +38,12 @@ export default function HomeHeader() {
                 </Link>
 
                 <div className="flex items-center gap-4">
-                    <Link
-                        href="/create"
+                    <button
+                        onClick={handleCreate}
                         className="rounded-md bg-emerald px-4 py-2 font-body text-sm font-semibold text-canvas transition-colors hover:bg-emerald-dark"
                     >
                         +
-                    </Link>
+                    </button>
 
                     <button
                         onClick={handleLogout}
